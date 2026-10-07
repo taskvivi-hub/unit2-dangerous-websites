@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dangerous Websites: How to Stay Safe Online</title>
+<!-- Static site: pronunciation uses the browser/device Web Speech API only. No external API key or paid API call. -->
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --text:#172033; --muted:#5e6b7d;
+  --primary:#2457c5; --primary2:#eaf0ff; --border:#dbe3ef;
+  --good:#18794e; --goodbg:#e9f8f0; --bad:#b42318; --badbg:#fff0ee;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans TC",sans-serif;background:var(--bg);color:var(--text);line-height:1.65}
+header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5}
+.header-inner{max-width:1050px;margin:auto;padding:16px 20px 10px}
+h1{font-size:clamp(21px,4vw,30px);margin:0 0 12px;line-height:1.3}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:12px}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+nav button{border:0;background:#edf1f7;color:#334155;padding:10px 15px;border-radius:10px;font-weight:700;white-space:nowrap;cursor:pointer}
+nav button.active{background:var(--primary);color:white}
+main{max-width:1050px;margin:24px auto;padding:0 18px 45px}
+.page{display:none}.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(20,35,60,.04)}
+h2{font-size:24px;margin:0 0 8px}
+h3{font-size:19px;margin:0 0 10px;color:#1d3f88}
+.intro{color:var(--muted);margin-top:0}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.vocab{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px}
+.word{font-size:19px;font-weight:800;color:var(--primary)}
+.pos{font-size:12px;color:var(--muted);font-weight:normal}
+.definition{margin:7px 0 4px}.zh{color:#526074;font-size:14px}
+.reading-block{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;background:#fff}
+.en,.cn{padding:18px}.cn{background:#f8faff;border-left:1px solid var(--border)}
+.section-label{font-weight:800;color:var(--primary);margin-bottom:7px}
+ul{margin:8px 0;padding-left:22px}
+.quiz-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+.qnum{font-size:13px;font-weight:800;color:var(--primary);text-transform:uppercase}
+.question{font-size:18px;font-weight:700;margin:4px 0 12px}
+.option{display:block;width:100%;text-align:left;border:1px solid var(--border);background:white;padding:12px 14px;border-radius:10px;margin:8px 0;font-size:15px;cursor:pointer;color:var(--text)}
+.option:hover:not(:disabled){border-color:#91a9df;background:#f7f9ff}
+.option:disabled{cursor:default}
+.option.correct{border-color:var(--good);background:var(--goodbg);color:#125b3b}
+.option.wrong{border-color:var(--bad);background:var(--badbg);color:#8d1c13}
+.feedback{display:none;margin-top:12px;padding:11px 13px;border-radius:10px;font-size:14px}
+.feedback.good{display:block;background:var(--goodbg);color:#125b3b}
+.feedback.bad{display:block;background:var(--badbg);color:#8d1c13}
+#scoreBox{display:none;text-align:center;background:#fff;border:2px solid var(--primary);border-radius:16px;padding:24px;margin-top:22px}
+#scoreBox .score{font-size:38px;font-weight:900;color:var(--primary)}
+.next{display:flex;justify-content:flex-end;margin-top:18px}
+.next button,.restart{border:0;background:var(--primary);color:#fff;padding:11px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+.small-note{font-size:13px;color:var(--muted)}
+
+.score-panel{display:none;text-align:center;background:#fff;border:2px solid var(--primary);border-radius:16px;padding:24px;margin-top:22px}
+.score-panel .score{font-size:38px;font-weight:900;color:var(--primary)}
+.secondary-btn{background:#526074;margin-left:8px}
+.student-form{display:none;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:18px}
+.form-row{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin:14px 0}
+.form-row label{font-weight:700;font-size:14px}
+.form-row input{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px}
+.form-error{color:var(--bad);font-size:14px;margin:8px 0}
+#certificateWrap{display:none;margin-top:24px}
+#certificate{background:#fff;border:8px double #263b67;border-radius:8px;padding:38px 34px;text-align:center;max-width:850px;margin:auto}
+.cert-kicker{font-size:13px;letter-spacing:2px;font-weight:800;color:#526074}
+.cert-title{font-family:Georgia,serif;font-size:42px;font-weight:700;margin:8px 0;color:#1d3564}
+.cert-subtitle{font-size:18px;font-weight:700;margin-bottom:30px}
+.cert-line{color:#64748b;margin-bottom:4px}
+.cert-name{font-family:Georgia,serif;font-size:32px;font-weight:700;border-bottom:1px solid #9aa8bd;display:inline-block;min-width:55%;padding:4px 18px 8px;margin-bottom:24px}
+.cert-details{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:12px 0 26px}
+.cert-details div{min-width:145px}
+.cert-details span{display:block;font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.7px}
+.cert-details strong{display:block;font-size:24px;color:#1d3564;margin-top:4px}
+.cert-message{font-size:16px}
+.cert-date{margin-top:25px;color:#64748b;font-size:14px}
+.cert-actions{text-align:center;margin-top:14px}
+@media(max-width:700px){
+ .form-row{grid-template-columns:1fr}
+ .cert-details{flex-direction:column;gap:14px}
+ #certificate{padding:28px 16px}
+ .cert-title{font-size:32px}
+ .cert-name{font-size:26px;min-width:85%}
+}
+@media print{
+ body *{visibility:hidden}
+ #certificateWrap,#certificateWrap *{visibility:visible}
+ #certificateWrap{display:block!important;position:absolute;left:0;top:0;width:100%;margin:0}
+ #certificate{border:8px double #263b67;box-shadow:none;max-width:none;margin:20px}
+ .cert-actions{display:none!important}
+ header{display:none}
+}
+
+@media(max-width:700px){
+ .vocab-grid,.reading-block{grid-template-columns:1fr}
+ .cn{border-left:0;border-top:1px solid var(--border)}
+ .card,.quiz-card{padding:16px}
+ main{margin-top:16px;padding-left:12px;padding-right:12px}
+ .header-inner{padding-left:14px;padding-right:14px}
+}
+
+.audio-btn{border:1px solid #b8c7e6;background:#f3f7ff;color:#214f9f;padding:7px 11px;border-radius:9px;font-weight:700;cursor:pointer;margin-top:9px;font-size:13px}
+.audio-btn:hover{background:#e7efff}
+.audio-btn.playing{background:#2457c5;color:#fff;border-color:#2457c5}
+
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+<h1>Dangerous Websites: How to Stay Safe Online</h1>
+<div class="subtitle">Unit 2 • Extensive Reading Learning Page</div>
+<nav>
+<button class="tab active" data-page="vocab">1. Vocabulary</button>
+<button class="tab" data-page="vocabquiz">2. Vocabulary Quiz</button>
+<button class="tab" data-page="reading">3. Reading</button>
+<button class="tab" data-page="quiz">4. Reading Quiz</button>
+</nav>
+</div>
+</header>
+
+<main>
+<section id="vocab" class="page active">
+<div class="card">
+<h2>1. Vocabulary</h2>
+<p class="intro">Learn these words before you read the article.</p>
+<div class="vocab-grid">
+<div class="vocab"><div class="word">dangerous <span class="pos">adj.</span></div><div class="definition">not safe; able to cause harm or problems</div><div class="zh">危險的；可能造成傷害或問題的</div><button class="audio-btn" onclick="speakText(this, 'dangerous')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">personal information <span class="pos">n.</span></div><div class="definition">private information about a person, such as a name, password, or account number</div><div class="zh">個人資料，例如姓名、密碼或帳號資訊</div><button class="audio-btn" onclick="speakText(this, 'personal information')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">phishing site <span class="pos">n.</span></div><div class="definition">a fake website that tries to steal your personal information</div><div class="zh">網路釣魚網站；試圖竊取個人資料的假網站</div><button class="audio-btn" onclick="speakText(this, 'phishing site')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">scareware <span class="pos">n.</span></div><div class="definition">a message or program that tries to scare you into taking action</div><div class="zh">恐嚇式軟體或訊息；利用恐懼促使使用者採取行動</div><button class="audio-btn" onclick="speakText(this, 'scareware')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">URL <span class="pos">n.</span></div><div class="definition">the web address of a page or website</div><div class="zh">網址；網頁或網站的網路位址</div><button class="audio-btn" onclick="speakText(this, 'URL')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">suspicious <span class="pos">adj.</span></div><div class="definition">making you think that something may be wrong, unsafe, or dishonest</div><div class="zh">可疑的；讓人覺得可能有問題、不安全或不誠實的</div><button class="audio-btn" onclick="speakText(this, 'suspicious')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">urgent <span class="pos">adj.</span></div><div class="definition">needing immediate attention or action</div><div class="zh">緊急的；需要立刻注意或處理的</div><button class="audio-btn" onclick="speakText(this, 'urgent')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">download <span class="pos">v.</span></div><div class="definition">to copy a file or program from the internet to your device</div><div class="zh">下載；從網路將檔案或程式存到裝置中</div><button class="audio-btn" onclick="speakText(this, 'download')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">browser <span class="pos">n.</span></div><div class="definition">a program used to visit and view websites</div><div class="zh">瀏覽器；用來開啟及瀏覽網站的程式</div><button class="audio-btn" onclick="speakText(this, 'browser')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">reduce the risk <span class="pos">phrase</span></div><div class="definition">to make the chance of danger or a problem smaller</div><div class="zh">降低風險；減少危險或問題發生的可能性</div><button class="audio-btn" onclick="speakText(this, 'reduce the risk')">🔊 Listen</button></div>
+</div>
+<div class="next"><button onclick="showPage('vocabquiz')">Next: Vocabulary Quiz →</button></div>
+</div>
+</section>
+
+<section id="vocabquiz" class="page">
+<div class="card">
+<h2>2. Vocabulary Quiz</h2>
+<p class="intro">Read each English definition and choose the correct word.</p>
+<p class="small-note">You will get feedback after each question. Answer all 10 questions to see your score.</p>
+</div>
+<div id="vocabQuizContainer"></div>
+<div id="vocabScoreBox" class="score-panel">
+<div>Vocabulary Quiz Complete!</div>
+<div class="score" id="vocabScoreText">0 / 10</div>
+<div id="vocabScoreMessage"></div>
+<br>
+<button class="restart" onclick="restartVocabQuiz()">Try Again</button>
+<button class="restart secondary-btn" onclick="showPage('reading')">Next: Reading →</button>
+</div>
+</section>
+
+<section id="reading" class="page">
+<div class="card">
+<h2>3. Reading</h2>
+<p class="intro">Read the English text on the left. Use the Chinese translation on the right when you need help.</p>
+
+<div class="reading-block">
+<div class="en"><div class="section-label">Introduction</div>The internet is useful, but not every website is safe. Some websites are designed to steal personal information, scare users, or install harmful software. Knowing the common types of dangerous websites can help you stay safe online.<button class="audio-btn" onclick='speakText(this, "The internet is useful, but not every website is safe. Some websites are designed to steal personal information, scare users, or install harmful software. Knowing the common types of dangerous websites can help you stay safe online.")'>🔊 Listen to this section</button></div>
+<div class="cn"><div class="section-label">中文翻譯</div>網路非常實用，但並不是每個網站都安全。有些網站是為了竊取個人資料、恐嚇使用者，或安裝有害軟體而設計的。了解常見的危險網站類型，可以幫助你在網路上保護自己的安全。</div>
+</div>
+
+<div class="reading-block">
+<div class="en"><div class="section-label">Common Types of Dangerous Websites</div>
+<ul>
+<li><b>Phishing sites</b> pretend to be real websites, such as a bank, school, or online store. They try to get users to enter passwords, account information, or other personal information.</li>
+<li><b>Scareware sites</b> show scary or urgent messages. They may say that your computer has a virus or that you must take action immediately.</li>
+<li><b>Typosquatting sites</b> use web addresses that look very similar to real ones. They often change, add, or remove one or two letters in the URL, hoping that users will not notice the difference.</li>
+<li><b>Drive-by download sites</b> may try to download harmful software onto your device when you visit the website or click something on the page.</li>
+</ul><button class="audio-btn" onclick='speakText(this, "Common Types of Dangerous Websites. Phishing sites pretend to be real websites, such as a bank, school, or online store. They try to get users to enter passwords, account information, or other personal information. Scareware sites show scary or urgent messages. They may say that your computer has a virus or that you must take action immediately. Typosquatting sites use web addresses that look very similar to real ones. They often change, add, or remove one or two letters in the URL, hoping that users will not notice the difference. Drive-by download sites may try to download harmful software onto your device when you visit the website or click something on the page.")'>🔊 Listen to this section</button></div>
+<div class="cn"><div class="section-label">中文翻譯</div>
+<ul>
+<li><b>網路釣魚網站</b>會假裝成真正的網站，例如銀行、學校或網路商店。它們試圖誘使使用者輸入密碼、帳號資訊或其他個人資料。</li>
+<li><b>恐嚇式網站</b>會顯示令人害怕或緊急的訊息。它們可能聲稱你的電腦中毒，或告訴你必須立刻採取行動。</li>
+<li><b>網址仿冒網站</b>會使用看起來和真正網站非常相似的網址。它們通常在 URL 中更改、增加或刪除一兩個字母，希望使用者沒有注意到差異。</li>
+<li><b>自動下載型網站</b>可能會在你造訪網站或點擊頁面上的內容時，試圖將有害軟體下載到你的裝置。</li>
+</ul></div>
+</div>
+
+<div class="reading-block">
+<div class="en"><div class="section-label">Warning Signs</div>Before entering personal information on a website, check it carefully. Some warning signs are:
+<ul>
+<li>a <b>strange or incorrect URL</b>;</li>
+<li><b>http:// instead of https://</b>, especially when the website asks for personal information;</li>
+<li>a <b>scary or urgent message</b> that tries to rush you;</li>
+<li>an <b>offer that seems too good to be true</b>.</li>
+</ul><button class="audio-btn" onclick='speakText(this, "Warning Signs. Before entering personal information on a website, check it carefully. Some warning signs are: a strange or incorrect URL; HTTP instead of HTTPS, especially when the website asks for personal information; a scary or urgent message that tries to rush you; an offer that seems too good to be true.")'>🔊 Listen to this section</button></div>
+<div class="cn"><div class="section-label">中文翻譯</div>在網站上輸入個人資料之前，請先仔細檢查。有些警訊包括：
+<ul>
+<li><b>奇怪或不正確的網址</b>；</li>
+<li>使用 <b>http:// 而不是 https://</b>，尤其是網站要求你輸入個人資料時；</li>
+<li>試圖催促你的<b>恐嚇或緊急訊息</b>；</li>
+<li><b>好得令人難以置信的優惠</b>。</li>
+</ul></div>
+</div>
+
+<div class="reading-block">
+<div class="en"><div class="section-label">How to Stay Safe</div>Always check the URL carefully before entering a password or personal information. Avoid clicking unexpected links in emails or messages. Keep your browser and software updated, and use browser safety tools that can warn you about suspicious websites.<button class="audio-btn" onclick='speakText(this, "How to Stay Safe. Always check the URL carefully before entering a password or personal information. Avoid clicking unexpected links in emails or messages. Keep your browser and software updated, and use browser safety tools that can warn you about suspicious websites.")'>🔊 Listen to this section</button></div>
+<div class="cn"><div class="section-label">中文翻譯</div>輸入密碼或個人資料之前，一定要仔細檢查網址。避免點擊電子郵件或訊息中突然出現、來路不明的連結。保持瀏覽器和軟體為最新版本，並使用能夠警告你可疑網站的瀏覽器安全工具。</div>
+</div>
+
+<div class="reading-block">
+<div class="en"><div class="section-label">Conclusion</div>Dangerous websites may still exist, but users can reduce the risk by checking websites carefully and developing safe online habits.<button class="audio-btn" onclick='speakText(this, "Dangerous websites may still exist, but users can reduce the risk by checking websites carefully and developing safe online habits.")'>🔊 Listen to this section</button></div>
+<div class="cn"><div class="section-label">中文翻譯</div>危險網站可能仍然存在，但使用者可以透過仔細檢查網站並養成安全的上網習慣來降低風險。</div>
+</div>
+
+<div class="next"><button onclick="showPage('quiz')">Next: Reading Quiz →</button></div>
+</div>
+</section>
+
+<section id="quiz" class="page">
+<div class="card">
+<h2>4. Reading Quiz</h2>
+<p class="intro">Choose the best answer. You will get feedback after each question.</p>
+<p class="small-note">Answer all five questions to see your final score.</p>
+</div>
+<div id="quizContainer"></div>
+<div id="scoreBox">
+<div>Quiz Complete!</div>
+<div class="score" id="scoreText">0 / 5</div>
+<div id="scoreMessage"></div>
+<br>
+<button class="restart" onclick="restartQuiz()">Try Again</button>
+</div>
+
+<div id="studentForm" class="student-form">
+<h3>Get Your Learning Certificate</h3>
+<p class="intro">Enter your seat number and name to get your certificate with your vocabulary, reading, and total scores.</p>
+<div class="form-row">
+<label>Seat Number
+<input id="seatNumber" type="text" inputmode="numeric" maxlength="10" placeholder="e.g. 12">
+</label>
+<label>Name
+<input id="studentName" type="text" maxlength="40" placeholder="Your name">
+</label>
+</div>
+<div id="formError" class="form-error"></div>
+<button class="restart" onclick="makeCertificate()">Submit</button>
+</div>
+
+<div id="certificateWrap">
+<div id="certificate">
+<div class="cert-kicker">UNIT 2 • EXTENSIVE READING</div>
+<div class="cert-title">Learning Certificate</div>
+<div class="cert-subtitle">Dangerous Websites: How to Stay Safe Online</div>
+<div class="cert-line">This certificate is awarded to</div>
+<div class="cert-name" id="certName"></div>
+<div class="cert-details">
+<div><span>Seat Number</span><strong id="certSeat"></strong></div>
+<div><span>Vocabulary Quiz</span><strong id="certVocabScore"></strong></div>
+<div><span>Reading Quiz</span><strong id="certReadingScore"></strong></div>
+<div><span>Total Score</span><strong id="certTotalScore"></strong></div>
+</div>
+<div class="cert-message">for completing the Unit 2 extensive reading learning activity.</div>
+<div class="cert-date" id="certDate"></div>
+</div>
+<div class="cert-actions">
+<button class="restart" onclick="window.print()">Print / Save as PDF</button>
+</div>
+</div>
+</section>
+</main>
+
+<script>
+
+let activeSpeechButton = null;
+let preferredVoice = null;
+
+function chooseNaturalEnglishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices || !voices.length) return null;
+
+  const english = voices.filter(v => /^en(-|_)/i.test(v.lang) || /^English/i.test(v.name));
+  if (!english.length) return voices[0] || null;
+
+  // Prefer US English and voice names commonly associated with higher-quality
+  // system/browser voices. If unavailable, gracefully fall back to any English voice.
+  const preferredNameHints = [
+    "Natural", "Neural", "Enhanced", "Premium",
+    "Samantha", "Ava", "Allison", "Susan",
+    "Jenny", "Aria", "Guy", "Andrew",
+    "Google US English", "Microsoft"
+  ];
+
+  const scoreVoice = (v) => {
+    let score = 0;
+    if (/^en-US$/i.test(v.lang)) score += 50;
+    else if (/^en/i.test(v.lang)) score += 25;
+    if (v.localService) score += 8;
+    const name = v.name || "";
+    preferredNameHints.forEach((hint, i) => {
+      if (name.toLowerCase().includes(hint.toLowerCase())) score += (30 - Math.min(i, 20));
+    });
+    return score;
+  };
+
+  return english.sort((a,b) => scoreVoice(b) - scoreVoice(a))[0];
+}
+
+function refreshVoice() {
+  preferredVoice = chooseNaturalEnglishVoice();
+}
+refreshVoice();
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = refreshVoice;
+}
+
+function resetSpeechButton() {
+  if (activeSpeechButton) {
+    activeSpeechButton.classList.remove("playing");
+    activeSpeechButton.textContent = activeSpeechButton.dataset.originalText || "🔊 Listen";
+  }
+  activeSpeechButton = null;
+}
+
+function speakText(btn, text) {
+  if (!("speechSynthesis" in window)) {
+    alert("Speech playback is not supported on this browser.");
+    return;
+  }
+
+  // Tapping the active button again stops playback.
+  if (activeSpeechButton === btn && window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    resetSpeechButton();
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  resetSpeechButton();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  refreshVoice();
+  if (preferredVoice) utterance.voice = preferredVoice;
+  utterance.lang = preferredVoice?.lang || "en-US";
+  utterance.rate = 0.90;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+
+  btn.dataset.originalText = btn.textContent;
+  btn.classList.add("playing");
+  btn.textContent = "⏹ Stop";
+  activeSpeechButton = btn;
+
+  utterance.onend = resetSpeechButton;
+  utterance.onerror = resetSpeechButton;
+  window.speechSynthesis.speak(utterance);
+}
+
+
+const vocabQuiz = [
+ {d:"not safe; able to cause harm or problems", a:"dangerous", opts:["dangerous","urgent","suspicious","browser"]},
+ {d:"private information about a person, such as a name, password, or account number", a:"personal information", opts:["personal information","phishing site","URL","download"]},
+ {d:"a fake website that tries to steal your personal information", a:"phishing site", opts:["scareware","browser","phishing site","URL"]},
+ {d:"a message or program that tries to scare you into taking action", a:"scareware", opts:["download","dangerous","reduce the risk","scareware"]},
+ {d:"the web address of a page or website", a:"URL", opts:["browser","URL","personal information","urgent"]},
+ {d:"making you think that something may be wrong, unsafe, or dishonest", a:"suspicious", opts:["urgent","download","suspicious","dangerous"]},
+ {d:"needing immediate attention or action", a:"urgent", opts:["urgent","browser","phishing site","reduce the risk"]},
+ {d:"to copy a file or program from the internet to your device", a:"download", opts:["URL","scareware","dangerous","download"]},
+ {d:"a program used to visit and view websites", a:"browser", opts:["personal information","browser","urgent","suspicious"]},
+ {d:"to make the chance of danger or a problem smaller", a:"reduce the risk", opts:["phishing site","download","reduce the risk","scareware"]}
+];
+let vocabAnswered = Array(vocabQuiz.length).fill(false);
+let vocabScore = 0;
+
+function renderVocabQuiz(){
+ const c=document.getElementById("vocabQuizContainer");
+ c.innerHTML="";
+ vocabQuiz.forEach((item,i)=>{
+   const card=document.createElement("div");
+   card.className="quiz-card";
+   card.innerHTML=`<div class="qnum">Question ${i+1} of 10</div>
+   <div class="question">${item.d}</div>
+   <div class="options">${item.opts.map((o,j)=>`<button class="option vocab-option" data-vq="${i}" data-vo="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>
+   <div class="feedback" id="vfb${i}"></div>`;
+   c.appendChild(card);
+ });
+ document.querySelectorAll(".vocab-option").forEach(btn=>btn.addEventListener("click",answerVocabQuestion));
+}
+
+function answerVocabQuestion(e){
+ const qi=Number(e.currentTarget.dataset.vq);
+ const oi=Number(e.currentTarget.dataset.vo);
+ if(vocabAnswered[qi]) return;
+ vocabAnswered[qi]=true;
+ const item=vocabQuiz[qi];
+ const buttons=document.querySelectorAll(`[data-vq="${qi}"]`);
+ buttons.forEach(b=>b.disabled=true);
+ const chosen=item.opts[oi];
+ const correctIndex=item.opts.indexOf(item.a);
+ const fb=document.getElementById(`vfb${qi}`);
+ if(chosen===item.a){
+   vocabScore++;
+   e.currentTarget.classList.add("correct");
+   fb.className="feedback good";
+   fb.innerHTML=`<b>Correct!</b> ${item.a}`;
+ }else{
+   e.currentTarget.classList.add("wrong");
+   buttons[correctIndex].classList.add("correct");
+   fb.className="feedback bad";
+   fb.innerHTML=`<b>Not quite.</b> The correct answer is <b>${item.a}</b>.`;
+ }
+ if(vocabAnswered.every(Boolean)){
+   const box=document.getElementById("vocabScoreBox");
+   document.getElementById("vocabScoreText").textContent=`${vocabScore} / 10`;
+   let msg=vocabScore>=9?"Excellent! You know these words very well.":
+           vocabScore>=7?"Great job! Review the words you missed.":
+           "Good try. Review the vocabulary and try again.";
+   document.getElementById("vocabScoreMessage").textContent=msg;
+   box.style.display="block";
+   setTimeout(()=>box.scrollIntoView({behavior:"smooth",block:"center"}),200);
+ }
+}
+function restartVocabQuiz(){
+ vocabAnswered=Array(vocabQuiz.length).fill(false); vocabScore=0;
+ document.getElementById("vocabScoreBox").style.display="none";
+ renderVocabQuiz();
+ document.getElementById("vocabquiz").scrollIntoView({behavior:"smooth"});
+}
+
+const quiz = [
+ {q:"A website looks like your bank’s real website. It asks you to enter your password and account information. What type of dangerous website could this be?",
+  opts:["A scareware site","A phishing site","A typosquatting site","A drive-by download site"],
+  a:1, exp:"A phishing site pretends to be a real website and tries to steal passwords or other personal information."},
+ {q:"A website suddenly says, “Your computer has a virus! Act now!” What type of dangerous website could this be?",
+  opts:["A drive-by download site","A typosquatting site","A phishing site","A scareware site"],
+  a:3, exp:"A scareware site uses scary or urgent messages to make users take action quickly."},
+ {q:"A student wants to visit a school website. The URL looks almost correct, but one letter is different. What type of dangerous website could this be?",
+  opts:["A typosquatting site","A phishing site","A scareware site","A drive-by download site"],
+  a:0, exp:"A typosquatting site uses a URL that looks very similar to a real one, often with only one or two letters changed."},
+ {q:"You visit a website, and it tries to put harmful software on your device when you click something. What type of dangerous website could this be?",
+  opts:["A phishing site","A scareware site","A drive-by download site","A typosquatting site"],
+  a:2, exp:"A drive-by download site may try to download harmful software onto your device when you visit the site or click something."},
+ {q:"What should you do before entering your password or personal information on a website?",
+  opts:["Check the URL carefully","Click any urgent message first","Download software from the page","Trust the website if it looks colorful"],
+  a:0, exp:"Always check the URL carefully before entering a password or personal information. Also watch for suspicious URLs, HTTP instead of HTTPS, and urgent messages."}
+];
+
+let answered = Array(quiz.length).fill(false);
+let score = 0;
+
+function renderQuiz(){
+ const c=document.getElementById("quizContainer");
+ c.innerHTML="";
+ quiz.forEach((item,i)=>{
+   const card=document.createElement("div");
+   card.className="quiz-card";
+   card.innerHTML=`<div class="qnum">Question ${i+1} of 5</div><div class="question">${item.q}</div>
+   <div class="options">${item.opts.map((o,j)=>`<button class="option" data-q="${i}" data-o="${j}">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>
+   <div class="feedback" id="fb${i}"></div>`;
+   c.appendChild(card);
+ });
+ document.querySelectorAll(".option").forEach(btn=>btn.addEventListener("click",answerQuestion));
+}
+
+function answerQuestion(e){
+ const qi=Number(e.currentTarget.dataset.q);
+ const oi=Number(e.currentTarget.dataset.o);
+ if(answered[qi]) return;
+ answered[qi]=true;
+ const item=quiz[qi];
+ const buttons=document.querySelectorAll(`[data-q="${qi}"]`);
+ buttons.forEach(b=>b.disabled=true);
+ const fb=document.getElementById(`fb${qi}`);
+ if(oi===item.a){
+   score++;
+   e.currentTarget.classList.add("correct");
+   fb.className="feedback good";
+   fb.innerHTML=`<b>Correct!</b> ${item.exp}`;
+ }else{
+   e.currentTarget.classList.add("wrong");
+   buttons[item.a].classList.add("correct");
+   fb.className="feedback bad";
+   fb.innerHTML=`<b>Not quite.</b> The correct answer is <b>${String.fromCharCode(65+item.a)}. ${item.opts[item.a]}</b><br>${item.exp}`;
+ }
+ if(answered.every(Boolean)){
+   const box=document.getElementById("scoreBox");
+   document.getElementById("scoreText").textContent=`${score} / 5`;
+   let msg = score===5 ? "Excellent! You understood the article very well." :
+             score>=4 ? "Great job! You understood most of the article." :
+             score>=3 ? "Good work. Review the article and try again." :
+             "Please review the article and try the quiz again.";
+   document.getElementById("scoreMessage").textContent=msg;
+   box.style.display="block";
+   document.getElementById("studentForm").style.display="block";
+   setTimeout(()=>box.scrollIntoView({behavior:"smooth",block:"center"}),200);
+ }
+}
+
+function restartQuiz(){
+ answered=Array(quiz.length).fill(false); score=0;
+ document.getElementById("scoreBox").style.display="none";
+ document.getElementById("studentForm").style.display="none";
+ document.getElementById("certificateWrap").style.display="none";
+ document.getElementById("seatNumber").value="";
+ document.getElementById("studentName").value="";
+ document.getElementById("formError").textContent="";
+ renderQuiz();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+function makeCertificate(){
+ const seat=document.getElementById("seatNumber").value.trim();
+ const name=document.getElementById("studentName").value.trim();
+ const err=document.getElementById("formError");
+ if(!seat || !name){
+   err.textContent="Please enter both your seat number and name.";
+   return;
+ }
+ err.textContent="";
+ document.getElementById("certSeat").textContent=seat;
+ document.getElementById("certName").textContent=name;
+ document.getElementById("certVocabScore").textContent=`${vocabScore} / 10`;
+ document.getElementById("certReadingScore").textContent=`${score} / 5`;
+ document.getElementById("certTotalScore").textContent=`${vocabScore + score} / 15`;
+ const d=new Date();
+ document.getElementById("certDate").textContent=d.toLocaleDateString("en-CA");
+ const wrap=document.getElementById("certificateWrap");
+ wrap.style.display="block";
+ setTimeout(()=>wrap.scrollIntoView({behavior:"smooth",block:"start"}),150);
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+renderVocabQuiz();
+renderQuiz();
+</script>
+</body>
+</html>
