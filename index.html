@@ -76,10 +76,21 @@ ul{margin:8px 0;padding-left:22px}
 .cert-actions{text-align:center;margin-top:14px}
 @media(max-width:700px){
  .form-row{grid-template-columns:1fr}
- .cert-details{flex-direction:column;gap:14px}
- #certificate{padding:28px 16px}
- .cert-title{font-size:32px}
- .cert-name{font-size:26px;min-width:85%}
+ #certificateWrap{margin-top:12px}
+ #certificate{padding:16px 12px;border-width:5px}
+ .cert-kicker{font-size:10px;letter-spacing:1.2px}
+ .cert-title{font-size:27px;margin:3px 0;line-height:1.15}
+ .cert-subtitle{font-size:13px;line-height:1.3;margin-bottom:10px}
+ .cert-line{font-size:12px;margin-bottom:1px}
+ .cert-name{font-size:22px;min-width:75%;padding:1px 10px 4px;margin-bottom:9px}
+ .cert-details{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 10px;margin:5px 0 9px}
+ .cert-details div{min-width:0}
+ .cert-details span{font-size:9px;letter-spacing:.3px}
+ .cert-details strong{font-size:19px;margin-top:0}
+ .cert-message{font-size:11px;line-height:1.35}
+ .cert-date{margin-top:8px;font-size:10px}
+ .cert-actions{margin-top:8px}
+ .cert-actions .restart{padding:8px 12px;font-size:12px}
 }
 @media print{
  body *{visibility:hidden}
@@ -124,16 +135,16 @@ ul{margin:8px 0;padding-left:22px}
 <h2>1. Vocabulary</h2>
 <p class="intro">Learn these words before you read the article.</p>
 <div class="vocab-grid">
-<div class="vocab"><div class="word">dangerous <span class="pos">adj.</span></div><div class="definition">not safe; able to cause harm or problems</div><div class="zh">危險的；可能造成傷害或問題的</div><button class="audio-btn" onclick="speakText(this, 'dangerous')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">personal information <span class="pos">n.</span></div><div class="definition">private information about a person, such as a name, password, or account number</div><div class="zh">個人資料，例如姓名、密碼或帳號資訊</div><button class="audio-btn" onclick="speakText(this, 'personal information')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">phishing site <span class="pos">n.</span></div><div class="definition">a fake website that tries to steal your personal information</div><div class="zh">網路釣魚網站；試圖竊取個人資料的假網站</div><button class="audio-btn" onclick="speakText(this, 'phishing site')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">scareware <span class="pos">n.</span></div><div class="definition">a message or program that tries to scare you into taking action</div><div class="zh">恐嚇式軟體或訊息；利用恐懼促使使用者採取行動</div><button class="audio-btn" onclick="speakText(this, 'scareware')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">URL <span class="pos">n.</span></div><div class="definition">the web address of a page or website</div><div class="zh">網址；網頁或網站的網路位址</div><button class="audio-btn" onclick="speakText(this, 'URL')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">phishing sites <span class="pos">n.</span></div><div class="definition">fake websites that pretend to be real in order to steal users’ information</div><div class="zh">網路釣魚網站；假冒真實網站以竊取使用者資訊</div><button class="audio-btn" onclick="speakText(this, 'phishing sites')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">scareware sites <span class="pos">n.</span></div><div class="definition">websites that use frightening warnings to make users take action quickly</div><div class="zh">恐嚇式網站；利用嚇人的警告迫使使用者迅速採取行動</div><button class="audio-btn" onclick="speakText(this, 'scareware sites')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">typosquatting sites <span class="pos">n.</span></div><div class="definition">websites with addresses very similar to real ones, often with a small spelling change</div><div class="zh">網址誤植詐騙網站；使用與真實網址極相似、僅有小幅拼字差異的網站</div><button class="audio-btn" onclick="speakText(this, 'typosquatting sites')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">drive-by download sites <span class="pos">n.</span></div><div class="definition">websites that may download harmful software when users visit or click something</div><div class="zh">瀏覽即下載網站；可能在使用者造訪或點擊時下載有害軟體的網站</div><button class="audio-btn" onclick="speakText(this, 'drive-by download sites')">🔊 Listen</button></div>
 <div class="vocab"><div class="word">suspicious <span class="pos">adj.</span></div><div class="definition">making you think that something may be wrong, unsafe, or dishonest</div><div class="zh">可疑的；讓人覺得可能有問題、不安全或不誠實的</div><button class="audio-btn" onclick="speakText(this, 'suspicious')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">harmful <span class="pos">adj.</span></div><div class="definition">causing damage, injury, or other problems</div><div class="zh">有害的；會造成損害、傷害或其他問題的</div><button class="audio-btn" onclick="speakText(this, 'harmful')">🔊 Listen</button></div>
 <div class="vocab"><div class="word">urgent <span class="pos">adj.</span></div><div class="definition">needing immediate attention or action</div><div class="zh">緊急的；需要立刻注意或處理的</div><button class="audio-btn" onclick="speakText(this, 'urgent')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">download <span class="pos">v.</span></div><div class="definition">to copy a file or program from the internet to your device</div><div class="zh">下載；從網路將檔案或程式存到裝置中</div><button class="audio-btn" onclick="speakText(this, 'download')">🔊 Listen</button></div>
-<div class="vocab"><div class="word">browser <span class="pos">n.</span></div><div class="definition">a program used to visit and view websites</div><div class="zh">瀏覽器；用來開啟及瀏覽網站的程式</div><button class="audio-btn" onclick="speakText(this, 'browser')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">take action <span class="pos">phrase</span></div><div class="definition">to do something in order to deal with a situation or problem</div><div class="zh">採取行動；為了處理某個情況或問題而做出行動</div><button class="audio-btn" onclick="speakText(this, 'take action')">🔊 Listen</button></div>
 <div class="vocab"><div class="word">reduce the risk <span class="pos">phrase</span></div><div class="definition">to make the chance of danger or a problem smaller</div><div class="zh">降低風險；減少危險或問題發生的可能性</div><button class="audio-btn" onclick="speakText(this, 'reduce the risk')">🔊 Listen</button></div>
+<div class="vocab"><div class="word">unexpected <span class="pos">adj.</span></div><div class="definition">not expected or not planned</div><div class="zh">未預期的；出乎意料的</div><button class="audio-btn" onclick="speakText(this, 'unexpected')">🔊 Listen</button></div>
 </div>
 <div class="next"><button onclick="showPage('vocabquiz')">Next: Vocabulary Quiz →</button></div>
 </div>
@@ -355,16 +366,16 @@ function speakText(btn, text) {
 
 
 const vocabQuiz = [
- {d:"not safe; able to cause harm or problems", a:"dangerous", opts:["dangerous","urgent","suspicious","browser"]},
- {d:"private information about a person, such as a name, password, or account number", a:"personal information", opts:["personal information","phishing site","URL","download"]},
- {d:"a fake website that tries to steal your personal information", a:"phishing site", opts:["scareware","browser","phishing site","URL"]},
- {d:"a message or program that tries to scare you into taking action", a:"scareware", opts:["download","dangerous","reduce the risk","scareware"]},
- {d:"the web address of a page or website", a:"URL", opts:["browser","URL","personal information","urgent"]},
- {d:"making you think that something may be wrong, unsafe, or dishonest", a:"suspicious", opts:["urgent","download","suspicious","dangerous"]},
- {d:"needing immediate attention or action", a:"urgent", opts:["urgent","browser","phishing site","reduce the risk"]},
- {d:"to copy a file or program from the internet to your device", a:"download", opts:["URL","scareware","dangerous","download"]},
- {d:"a program used to visit and view websites", a:"browser", opts:["personal information","browser","urgent","suspicious"]},
- {d:"to make the chance of danger or a problem smaller", a:"reduce the risk", opts:["phishing site","download","reduce the risk","scareware"]}
+ {d:"fake websites that pretend to be real in order to steal users’ information", a:"phishing sites", opts:["phishing sites","scareware sites","typosquatting sites","drive-by download sites"]},
+ {d:"websites that use frightening warnings to make users take action quickly", a:"scareware sites", opts:["drive-by download sites","scareware sites","phishing sites","typosquatting sites"]},
+ {d:"websites with addresses very similar to real ones, often with a small spelling change", a:"typosquatting sites", opts:["scareware sites","phishing sites","typosquatting sites","drive-by download sites"]},
+ {d:"websites that may download harmful software when users visit or click something", a:"drive-by download sites", opts:["typosquatting sites","phishing sites","scareware sites","drive-by download sites"]},
+ {d:"making you think that something may be wrong, unsafe, or dishonest", a:"suspicious", opts:["harmful","urgent","unexpected","suspicious"]},
+ {d:"causing damage, injury, or other problems", a:"harmful", opts:["harmful","unexpected","suspicious","urgent"]},
+ {d:"needing immediate attention or action", a:"urgent", opts:["suspicious","urgent","harmful","unexpected"]},
+ {d:"to do something in order to deal with a situation or problem", a:"take action", opts:["reduce the risk","unexpected","take action","suspicious"]},
+ {d:"to make the chance of danger or a problem smaller", a:"reduce the risk", opts:["take action","harmful","unexpected","reduce the risk"]},
+ {d:"not expected or not planned", a:"unexpected", opts:["urgent","unexpected","suspicious","harmful"]}
 ];
 let vocabAnswered = Array(vocabQuiz.length).fill(false);
 let vocabScore = 0;
