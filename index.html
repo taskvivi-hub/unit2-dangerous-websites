@@ -279,6 +279,7 @@ ul{margin:8px 0;padding-left:22px}
 </main>
 
 <script>
+// Unit 2 final v2: updated vocabulary quiz + BE STEP voice-selection logic
 
 let activeSpeechButton = null;
 let preferredVoice = null;
@@ -287,39 +288,39 @@ function chooseNaturalEnglishVoice() {
   const voices = window.speechSynthesis.getVoices();
   if (!voices || !voices.length) return null;
 
-  const english = voices.filter(v => /^en(-|_)/i.test(v.lang) || /^English/i.test(v.name));
-  if (!english.length) return voices[0] || null;
+  // Use the same priority strategy as the BE STEP practice site:
+  // 1) prefer high-quality en-US Microsoft voices;
+  // 2) then familiar natural system voices;
+  // 3) then voices explicitly marked Natural/Neural/Premium/Enhanced;
+  // 4) finally fall back to any en-US, then any English voice.
+  const usVoices = voices.filter(v => /^en-US$/i.test(v.lang));
+  const englishVoices = voices.filter(v => /^en(?:-|_)/i.test(v.lang));
 
-  // Prefer US English and voice names commonly associated with higher-quality
-  // system/browser voices. If unavailable, gracefully fall back to any English voice.
-  const preferredNameHints = [
-    "Natural", "Neural", "Enhanced", "Premium",
-    "Samantha", "Ava", "Allison", "Susan",
-    "Jenny", "Aria", "Guy", "Andrew",
-    "Google US English", "Microsoft"
+  const preferredPatterns = [
+    /Microsoft.*(Aria|Jenny|Guy|Ana|Andrew|Emma|Brian)/i,
+    /(Samantha|Alex|Ava|Allison|Susan|Zira|David|Mark)/i,
+    /(Natural|Neural|Premium|Enhanced)/i
   ];
 
-  const scoreVoice = (v) => {
-    let score = 0;
-    if (/^en-US$/i.test(v.lang)) score += 50;
-    else if (/^en/i.test(v.lang)) score += 25;
-    if (v.localService) score += 8;
-    const name = v.name || "";
-    preferredNameHints.forEach((hint, i) => {
-      if (name.toLowerCase().includes(hint.toLowerCase())) score += (30 - Math.min(i, 20));
-    });
-    return score;
-  };
+  for (const pattern of preferredPatterns) {
+    const match = usVoices.find(v => pattern.test(v.name || ""));
+    if (match) return match;
+  }
 
-  return english.sort((a,b) => scoreVoice(b) - scoreVoice(a))[0];
+  return usVoices[0] || englishVoices[0] || null;
 }
 
 function refreshVoice() {
   preferredVoice = chooseNaturalEnglishVoice();
 }
+
+// Voice lists may load asynchronously in Chrome/Edge.
 refreshVoice();
 if ("speechSynthesis" in window) {
-  window.speechSynthesis.onvoiceschanged = refreshVoice;
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+    refreshVoice();
+  };
 }
 
 function resetSpeechButton() {
